@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.learnup.socialnetwork.entity.Image;
-import ru.learnup.socialnetwork.model.ImagesResponse;
+import ru.learnup.socialnetwork.model.Image;
+import ru.learnup.socialnetwork.dto.ImagesResponse;
 import ru.learnup.socialnetwork.service.ImageService;
 
 import java.util.List;

@@ -1,69 +1,34 @@
 package ru.learnup.socialnetwork.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.learnup.socialnetwork.entity.Image;
-import ru.learnup.socialnetwork.model.ImageDto;
+import ru.learnup.socialnetwork.dto.UserDto;
+import ru.learnup.socialnetwork.model.Image;
+import ru.learnup.socialnetwork.dto.ImageDto;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.ImageView;
+import ru.learnup.socialnetwork.view.UserView;
 
 import java.io.IOException;
 
-@Component
-public class ImageMapper {
+@Mapper
+public interface ImageMapper {
 
-    public Image toImageEntity(MultipartFile file) throws IOException {
-        Image imageEntity = new Image();
-        imageEntity.setName(file.getName());
-        imageEntity.setOriginalFileName(StringUtils.cleanPath(file.getOriginalFilename()));
-        imageEntity.setContentType(file.getContentType());
-        imageEntity.setBytes(file.getBytes());
-        imageEntity.setSize(file.getSize());
-        return imageEntity;
-    }
+    ImageMapper IMAGE_MAPPER = Mappers.getMapper(ImageMapper.class);
 
-    public ImageDto mapToDto(Image entity) {
-        return ImageDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .originalFileName(entity.getOriginalFileName())
-                .size(entity.getSize())
-                .bytes(entity.getBytes())
-                .contentType(entity.getContentType())
-                .build();
-    }
+    Image toImageEntity(MultipartFile file) throws IOException;
 
-    public Image mapToEntity(ImageDto dto) {
-        Image image = new Image();
-        image.setId(dto.getId());
-        image.setName(dto.getName());
-        image.setOriginalFileName(dto.getOriginalFileName());
-        image.setSize(dto.getSize());
-        image.setContentType(dto.getContentType());
-        image.setBytes(dto.getBytes());
-        return image;
-    }
+    Image mapToEntity(ImageDto dto);
 
-    public ImageView mapToView(ImageDto dto) {
-        ImageView view = new ImageView();
-        view.setId(dto.getId());
-        view.setName(dto.getName());
-        view.setOriginalFileName(dto.getOriginalFileName());
-        view.setSize(dto.getSize());
-        view.setContentType(dto.getContentType());
-        view.setBytes(dto.getBytes());
-        return view;
-    }
+    ImageDto mapToDto(Image user);
 
-    public ImageDto mapFromView(ImageView view) {
-        return ImageDto.builder()
-                .id(view.getId())
-                .name(view.getName())
-                .originalFileName(view.getOriginalFileName())
-                .size(view.getSize())
-                .contentType(view.getContentType())
-                .bytes(view.getBytes())
-                .build();
-    }
+    ImageView mapToView(ImageDto dto);
+
+    ImageDto mapFromView(ImageView view);
+
 
 }

@@ -2,7 +2,7 @@ package ru.learnup.socialnetwork.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.learnup.socialnetwork.entity.User;
+import ru.learnup.socialnetwork.model.User;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +28,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getNickname();
+        return user.getLogin();
     }
 
     @Override

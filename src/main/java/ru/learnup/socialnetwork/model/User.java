@@ -1,4 +1,4 @@
-package ru.learnup.socialnetwork.entity;
+package ru.learnup.socialnetwork.model;
 
 import lombok.*;
 
@@ -20,13 +20,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Name can not be empty")
-    @Size(min = 2, max = 100, message = "name must be between 2 and 100 characters long")
-    @Column(name = "nickname")
-    private String nickname;
+    @Column(name = "login")
+    private String login;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "confirmPassword")
+    private String confirmPassword;
 
     @Column(name = "Status")
     private String Status;
@@ -44,7 +51,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", nickname='" + nickname + '\'' +
+                ", nickname='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", Status='" + Status + '\'' +
                 ", enabled=" + enabled +
@@ -52,5 +59,6 @@ public class User {
                 ", role=" + role +
                 '}';
     }
+
 }
 

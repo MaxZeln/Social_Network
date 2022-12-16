@@ -1,38 +1,26 @@
 package ru.learnup.socialnetwork.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
-import ru.learnup.socialnetwork.entity.Role;
-import ru.learnup.socialnetwork.model.RoleDto;
+import ru.learnup.socialnetwork.dto.UserDto;
+import ru.learnup.socialnetwork.model.Role;
+import ru.learnup.socialnetwork.dto.RoleDto;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.RoleView;
+import ru.learnup.socialnetwork.view.UserView;
 
-@Component
-public class RoleMapper {
+@Mapper
+public interface RoleMapper {
 
-    public RoleDto mapToDto(Role entity) {
-        return RoleDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .build();
-    }
+    RoleMapper ROLE_MAPPER = Mappers.getMapper(RoleMapper.class);
 
-    public Role mapToEntity(RoleDto dto) {
-        Role role = new Role();
-        role.setId(dto.getId());
-        role.setName(dto.getName());
-        return role;
-    }
+    Role mapFromDto(RoleDto dto);
+    RoleDto mapToDto(Role role);
 
-    public RoleView mapToView(RoleDto dto) {
-        RoleView view = new RoleView();
-        view.setId(dto.getId());
-        view.setName(dto.getName());
-        return view;
-    }
+    RoleView mapToView(RoleDto dto);
 
-    public RoleDto mapFromView(RoleView view) {
-        return RoleDto.builder()
-                .id(view.getId())
-                .name(view.getName())
-                .build();
-    }
+    RoleDto mapFromView(RoleView view);
+
 }

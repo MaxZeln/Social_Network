@@ -1,4 +1,4 @@
-package ru.learnup.socialnetwork.entity;
+package ru.learnup.socialnetwork.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "privatemessages")
+@Entity(name = "private_messages")
 @Table(name="massages")
 public class PrivateMessages {
 

@@ -25,11 +25,14 @@ public class AuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String nickname = authentication.getName();
+        String login = authentication.getName();
         String password = String.valueOf(authentication.getCredentials());
 
-        UserDetails personDetails = personDetailsService.loadUserByUsername(nickname);
+        UserDetails personDetails = personDetailsService.loadUserByUsername(login);
 
+        if (personDetails == null) {
+            throw new BadCredentialsException("Unknown user " + login);
+        }
         if (!password.equals(personDetails.getPassword())) {
             throw new BadCredentialsException("Incorrect password");
         }
@@ -40,7 +43,7 @@ public class AuthProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return true;
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
 }

@@ -2,8 +2,6 @@ package ru.learnup.socialnetwork.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,21 +9,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import ru.learnup.socialnetwork.entity.Image;
-import ru.learnup.socialnetwork.entity.Role;
-import ru.learnup.socialnetwork.entity.User;
+import ru.learnup.socialnetwork.model.Image;
+import ru.learnup.socialnetwork.model.Role;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.mapper.ImageMapper;
 import ru.learnup.socialnetwork.mapper.RoleMapper;
 import ru.learnup.socialnetwork.mapper.UserMapper;
-import ru.learnup.socialnetwork.model.UserDto;
+import ru.learnup.socialnetwork.dto.UserDto;
 import ru.learnup.socialnetwork.reposiory.RoleRepository;
 import ru.learnup.socialnetwork.security.PersonDetails;
 import ru.learnup.socialnetwork.service.ImageService;
 import ru.learnup.socialnetwork.service.UserService;
-import ru.learnup.socialnetwork.util.UserValidator;
+import ru.learnup.socialnetwork.util.validation.UserValidator;
+import ru.learnup.socialnetwork.view.UserView;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 
 @RestController
@@ -33,26 +31,17 @@ import java.io.IOException;
 @Slf4j
 public class AuthController {
 
-    private final UserMapper userMapper;
-    private final RoleMapper roleMapper;
-    private final ImageMapper imageMapper;
     private final UserValidator userValidator;
     private final RoleRepository roleRepository;
     private final ImageService imageService;
     private final UserService userService;
 
     @Autowired
-    public AuthController(UserMapper userMapper,
-                          RoleMapper roleMapper,
-                          ImageMapper imageMapper,
+    public AuthController(
                           UserValidator userValidator,
                           RoleRepository roleRepository,
                           ImageService imageService,
                           UserService userService) {
-
-        this.userMapper = userMapper;
-        this.roleMapper = roleMapper;
-        this.imageMapper = imageMapper;
         this.userValidator = userValidator;
         this.roleRepository = roleRepository;
         this.imageService = imageService;
@@ -76,27 +65,18 @@ public class AuthController {
 
 
     @GetMapping("/registration")
-    public ModelAndView registrationPage(@ModelAttribute("user") User user) {
+    public ModelAndView registrationPage(@ModelAttribute("userView") UserView userView) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("auth/registration");
         return modelAndView;
     }
 
-//    @GetMapping("/authentication")
-//    public Object getAuthentication(@CurrentSecurityContext(expression = "user")
-//                                            Authentication authentication) {
-//        return authentication.getDetails();
-//    }
 
     @GetMapping("/authentication")
     public User getAuthentication() {
         PersonDetails userPrincipal = null;
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Object principal = securityContext.getAuthentication().getPrincipal();
-//        if (principal instanceof User) {
-//            userPrincipal = ((User) principal);
-//        }
-//        return userPrincipal;
         System.out.println(principal);
         System.out.println("");
         System.out.println("");
@@ -111,11 +91,11 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView performRegistration(@ModelAttribute("user") @Valid User user,
+    public ModelAndView performRegistration(@ModelAttribute("userView") @Valid UserView userView,
                                             @RequestParam MultipartFile file,
                                             BindingResult bindingResult) throws IOException {
 
-    userValidator.validate(user, bindingResult);
+    userValidator.validate(userView, bindingResult);
 
     if (bindingResult.hasErrors()) {
         ModelAndView registration = new ModelAndView();
@@ -125,8 +105,8 @@ public class AuthController {
 
     Role role = roleRepository.getReferenceById(2L);
 
-    if (user.getStatus().isEmpty()) {
-        user.setStatus("Empty status");
+    if (userView.getStatus().isEmpty()) {
+        userView.setStatus("Empty status");
     }
 
     Image image = new Image();
@@ -143,12 +123,15 @@ public class AuthController {
 
     UserDto userDto = UserDto.builder()
             .id(1L)
-            .nickname(user.getNickname())
-            .password(user.getPassword())
-            .status(user.getStatus())
+            .login(userView.getLogin())
+            .email(userView.getEmail())
+            .phone(userView.getPhone())
+            .password(userView.getPassword())
+            .confirmPassword(userView.getPassword())
+            .status(userView.getStatus())
             .enabled(false)
-            .role(roleMapper.mapToDto(role))
-            .image(imageMapper.mapToDto(image))
+            .role(RoleMapper.ROLE_MAPPER.mapToDto(role))
+            .image(ImageMapper.IMAGE_MAPPER.mapToDto(image))
             .build();
 
     userService.create(userDto);

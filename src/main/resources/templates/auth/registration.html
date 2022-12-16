@@ -1,38 +1,137 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
+
 <body>
 
+<form method="post" th:action="@{/registration}" th:object="${userView}" enctype="multipart/form-data">
+    <main class="main">
 
-<form method="post" th:action="@{/auth/registration}" th:object="${user}" enctype="multipart/form-data">
+        <div class="input-container">
+            <label for="login">
+                <span class="label-text">Логин</span>
+            </label>
+            <input
+                    type="text"
+                    th:field="*{login}"
+                    id="login"
+                    placeholder="введите фамилию"
+            />
+            <div
+                    class="error"
+                    style="color:red"
+                    th:if="${#fields.hasErrors('login')}"
+                    th:errors="*{login}"> lastname error
+            </div>
+        </div>
 
-    <label for="nickname">Введите имя пользователя: </label>
-    <input type="text" th:field="*{nickname}" id="nickname">
-    <div style="color:red" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Username Error</div>
-    <br/><br/>
 
-    <label for="password">Введите пароль: </label>
-    <input type="text" th:field="*{password}" id="password">
-    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
-    <br/><br/>
+        <div class="input-container">
+            <label for="email">
+                <span class="label-text">E-mail</span>
+            </label>
+            <input
+                    type="email"
+                    th:field="*{email}"
+                    id="email"
+                    placeholder="введите e-mail"
+            />
+            <div
+                    class="error"
+                    style="color:red"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"> email error
+            </div>
+        </div>
 
-    <label for="status">Введите статут для вашего профиля: </label>
-    <input type="text" th:field="*{status}" id="status">
-    <div style="color:red" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status Error</div>
-    <br/><br/>
+        <div class="input-container">
+            <label for="phone">
+                <span class="label-text">Телефон</span>
+            </label>
+            <input
+                    type="tel"
+                    th:field="*{phone}"
+                    id="phone"
+                    placeholder="+7 (999) 999-99-99"
+            />
+            <div
+                    class="error"
+                    style="color:red"
+                    th:if="${#fields.hasErrors('phone')}"
+                    th:errors="*{phone}"> phone error
+            </div>
+        </div>
 
-    <label class="col-form-label">Выберите фотографию профиля: </label>
-    <br/>
-    <input type="file" name="file" />
-    <br/><br/>
+        <div class="input-container">
+            <label for="password">
+                <span class="label-text">Пароль</span>
+            </label>
+            <input
+                    type="password"
+                    th:field="*{password}"
+                    id="password"
+                    placeholder="введите пароль"
+            />
+            <div
+                    class="error"
+                    style="color:red"
+                    th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}"> password error
+            </div>
+        </div>
 
-    <input type="submit" values="Sign up!"/>
+        <div class="input-container">
+            <label for="password2">
+                <span class="label-text">Повторите пароль</span>
+            </label>
+            <input
+                    type="password"
+                    th:field="*{confirmPassword}"
+                    id="password2"
+                    placeholder="введите пароль еще раз"
+            />
+            <div
+                    class="error"
+                    style="color:red"
+                    th:if="${#fields.hasErrors('confirmPassword')}"
+                    th:errors="*{confirmPassword}"> repeated password Error
+            </div>
+        </div>
 
+        <div class="input-container">
+            <label for="status">
+                <span class="label-text">Введите свой статус</span>
+            </label>
+            <input
+                    type="status"
+                    th:field="*{status}"
+                    id="status"
+                    placeholder="введите пароль еще раз"
+            />
+            <div
+                    class="error"
+                    style="color:red"
+                    th:if="${#fields.hasErrors('status')}"
+                    th:errors="*{status}"> Status Error
+            </div>
+        </div>
+
+        <label class="col-form-label">Выберите фотографию профиля: </label>
+            <br/><br/>
+            <input type="file" name="file" />
+            <br/><br/>
+        </div>
+
+        <button class="btn btn-submit" type="submit">
+            Зарегистрироваться
+        </button>
+
+    </main>
 </form>
-
 
 </body>
 </html>

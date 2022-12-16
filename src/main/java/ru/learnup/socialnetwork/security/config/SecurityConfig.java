@@ -1,10 +1,11 @@
-package ru.learnup.socialnetwork.config;
+package ru.learnup.socialnetwork.security.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.learnup.socialnetwork.security.AuthProvider;
 import ru.learnup.socialnetwork.security.AuthService;
 
 
@@ -22,13 +24,16 @@ public class SecurityConfig {
 
     private final AuthService personDetailsService;
     private final AuthenticationConfiguration configuration;
+    private final AuthProvider authProvider;
 
 
     @Autowired
     public SecurityConfig(AuthService personDetailsService,
-                          AuthenticationConfiguration configuration) {
+                          AuthenticationConfiguration configuration,
+                          AuthProvider authProvider) {
         this.personDetailsService = personDetailsService;
         this.configuration = configuration;
+        this.authProvider = authProvider;
     }
 
     @Bean
@@ -39,7 +44,6 @@ public class SecurityConfig {
 
                 .authorizeRequests(auth -> {
                     auth.antMatchers("/auth/login", "/auth/registration", "/error").permitAll();
-//                    auth.requestMatchers()
 
                     auth.anyRequest().authenticated();
 
@@ -63,19 +67,33 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    AuthenticationManager authenticationManager() throws Exception {
-        return configuration.getAuthenticationManager();
-    }
 
-    @Autowired
-    void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personDetailsService).passwordEncoder(getPasswordEncoder());
-    }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(authProvider);
+        return authenticationManagerBuilder.build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider customAuthProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(personDetailsService);
+        authProvider.setPasswordEncoder(getPasswordEncoder());
+        return authProvider;
+    }
+
+
+    @Bean
+    AuthenticationManager authenticationManager() throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
 }

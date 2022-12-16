@@ -3,7 +3,7 @@ package ru.learnup.socialnetwork.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.learnup.socialnetwork.entity.Image;
+import ru.learnup.socialnetwork.model.Image;
 import ru.learnup.socialnetwork.mapper.ImageMapper;
 import ru.learnup.socialnetwork.reposiory.ImageRepository;
 
@@ -15,16 +15,14 @@ import java.util.Optional;
 public class ImageService {
 
     private final ImageRepository repository;
-    private final ImageMapper imageMapper;
 
     @Autowired
-    public ImageService(ImageRepository imageRepository, ImageMapper imageMapper) {
+    public ImageService(ImageRepository imageRepository) {
         this.repository = imageRepository;
-        this.imageMapper = imageMapper;
     }
 
     public void save(MultipartFile image) throws IOException {
-        repository.save(imageMapper.toImageEntity(image));
+        repository.save(ImageMapper.IMAGE_MAPPER.toImageEntity(image));
     }
 
     public Optional<Image> getImage(String id) {

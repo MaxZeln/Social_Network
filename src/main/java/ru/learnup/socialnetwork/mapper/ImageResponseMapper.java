@@ -1,50 +1,24 @@
 package ru.learnup.socialnetwork.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.learnup.socialnetwork.entity.Image;
-import ru.learnup.socialnetwork.model.ImagesResponse;
+import ru.learnup.socialnetwork.dto.UserDto;
+import ru.learnup.socialnetwork.model.Image;
+import ru.learnup.socialnetwork.dto.ImagesResponse;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.ImagesResponseView;
+import ru.learnup.socialnetwork.view.UserView;
 
-@Component
-public class ImageResponseMapper {
+@Mapper
+public interface ImageResponseMapper {
 
-    public ImagesResponse mapToImagesResponse(Image image) {
+    ImageResponseMapper IMAGES_RESPONSE = Mappers.getMapper(ImageResponseMapper.class);
 
+    ImagesResponseView mapToView(ImagesResponse dto);
 
-        String downloadURL = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/user/")
-                .path(image.getId())
-                .toUriString();
-
-        return ImagesResponse.builder()
-                .id(image.getId())
-                .name(image.getName())
-                .contentType(image.getContentType())
-                .size(image.getSize())
-                .url(downloadURL)
-                .build();
-    }
-
-    public ImagesResponseView mapToView(ImagesResponse dto) {
-        ImagesResponseView view = new ImagesResponseView();
-        view.setId(dto.getId());
-        view.setName(dto.getName());
-        view.setSize(dto.getSize());
-        view.setContentType(dto.getContentType());
-        view.setUrl(dto.getUrl());
-        return view;
-    }
-
-    public ImagesResponse mapFromView(ImagesResponseView view) {
-        return ImagesResponse.builder()
-                .id(view.getId())
-                .name(view.getName())
-                .size(view.getSize())
-                .contentType(view.getContentType())
-                .url(view.getUrl())
-                .build();
-    }
-
+    ImagesResponse mapFromView(ImagesResponseView view);
 
 }

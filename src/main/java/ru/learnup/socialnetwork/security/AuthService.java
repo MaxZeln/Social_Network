@@ -1,14 +1,13 @@
 package ru.learnup.socialnetwork.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.learnup.socialnetwork.entity.User;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.reposiory.UserRepository;
+import ru.learnup.socialnetwork.security.PersonDetails;
 
 import java.util.Optional;
 
@@ -23,8 +22,8 @@ public class AuthService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.getUserByNickname(nickname);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.getUserByLogin(login);
 
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
@@ -32,15 +31,5 @@ public class AuthService implements UserDetailsService {
 
         return new PersonDetails(user.get());
     }
-
-//    public User getUser() {
-//        User userPrincipal = null;
-//        SecurityContext securityContext = SecurityContextHolder.getContext();
-//        Object principal = securityContext.getAuthentication().getPrincipal();
-//        if (principal instanceof User) {
-//            userPrincipal =((User) principal);
-//        }
-//        return userPrincipal;
-//    }
 
 }

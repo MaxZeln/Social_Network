@@ -1,4 +1,4 @@
-package ru.learnup.socialnetwork.entity;
+package ru.learnup.socialnetwork.model;
 
 
 import lombok.AllArgsConstructor;

@@ -1,12 +1,9 @@
 package ru.learnup.socialnetwork.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.learnup.socialnetwork.entity.User;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.mapper.FriendMapper;
-import ru.learnup.socialnetwork.model.FriendDto;
-import ru.learnup.socialnetwork.model.UserDto;
 import ru.learnup.socialnetwork.reposiory.UserRepository;
 import ru.learnup.socialnetwork.service.FriendService;
 import ru.learnup.socialnetwork.service.UserService;
@@ -22,24 +19,21 @@ public class FriendsController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final FriendService friendsService;
-    private final FriendMapper mapper;
 
     @Autowired
     public FriendsController(UserService userService,
                              UserRepository userRepository,
-                             FriendService service,
-                             FriendMapper mapper) {
+                             FriendService service) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.friendsService = service;
-        this.mapper = mapper;
     }
 
     @GetMapping("/{userid}")
     public List<FriendView> getFriends(@PathVariable(name = "userid") long userid) {
         User user = userRepository.getReferenceById(userid);
         return friendsService.findByUserId(user).stream()
-                .map(mapper::mapToView)
+                .map(FriendMapper.FRIEND_MAPPER::mapToView)
                 .collect(Collectors.toList());
     }
 

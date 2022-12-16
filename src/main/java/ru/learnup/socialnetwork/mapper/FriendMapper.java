@@ -1,53 +1,28 @@
 package ru.learnup.socialnetwork.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.learnup.socialnetwork.entity.Friend;
-import ru.learnup.socialnetwork.model.FriendDto;
+import ru.learnup.socialnetwork.dto.UserDto;
+import ru.learnup.socialnetwork.model.Friend;
+import ru.learnup.socialnetwork.dto.FriendDto;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.FriendView;
+import ru.learnup.socialnetwork.view.UserView;
 
-import java.util.stream.Collectors;
+@Mapper
+public interface FriendMapper {
 
-@Component
-public class FriendMapper {
+    FriendMapper FRIEND_MAPPER= Mappers.getMapper(FriendMapper.class);
 
-    private final UserMapper userMapper;
+    Friend mapFromDto(FriendDto dto);
 
-    @Autowired
-    public FriendMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    FriendDto mapToDto(Friend user);
 
-    public FriendDto mapToDto(Friend entity) {
-        return FriendDto.builder()
-                .id(entity.getId())
-                .userId(userMapper.mapToDto(entity.getUserId()))
-                .friendId(userMapper.mapToDto(entity.getFriendId()))
-                .build();
-    }
+    FriendView mapToView(FriendDto dto);
 
-    public Friend mapToEntity(FriendDto dto) {
-        Friend friends = new Friend();
-        friends.setId(dto.getId());
-        friends.setUserId(userMapper.mapToEntity(dto.getUserId()));
-        friends.setFriendId(userMapper.mapToEntity(dto.getFriendId()));
-       return friends;
-    }
-
-    public FriendView mapToView(FriendDto dto) {
-        FriendView view = new FriendView();
-        view.setId(dto.getId());
-        view.setUserId(userMapper.mapToView(dto.getUserId()));
-        view.setFriendId(userMapper.mapToView(dto.getFriendId()));
-        return view;
-    }
-
-    public FriendDto mapFromView(FriendView view) {
-        return FriendDto.builder()
-                .id(view.getId())
-                .userId(userMapper.mapFromView(view.getUserId()))
-                .friendId(userMapper.mapFromView(view.getFriendId()))
-                .build();
-    }
+    FriendDto mapFromView(FriendView view);
 
 }

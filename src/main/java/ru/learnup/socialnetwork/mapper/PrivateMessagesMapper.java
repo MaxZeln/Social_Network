@@ -1,59 +1,28 @@
 package ru.learnup.socialnetwork.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.learnup.socialnetwork.entity.PrivateMessages;
-import ru.learnup.socialnetwork.model.PrivateMessagesDto;
+import ru.learnup.socialnetwork.dto.UserDto;
+import ru.learnup.socialnetwork.model.PrivateMessages;
+import ru.learnup.socialnetwork.dto.PrivateMessagesDto;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.PrivateMessagesView;
+import ru.learnup.socialnetwork.view.UserView;
 
-@Component
-public class PrivateMessagesMapper {
+@Mapper
+public interface PrivateMessagesMapper {
 
-    private final UserMapper userMapper;
+    PrivateMessagesMapper PRIVATE_MESSAGES_MAPPER = Mappers.getMapper(PrivateMessagesMapper.class);
 
-    @Autowired
-    public PrivateMessagesMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    PrivateMessages mapFromDto(PrivateMessagesDto dto);
 
-    public PrivateMessagesDto mapToDto(PrivateMessages entity){
-        return PrivateMessagesDto.builder()
-                .id(entity.getId())
-                .time(entity.getTime())
-                .content(entity.getContent())
-                .from(userMapper.mapToDto(entity.getFrom()))
-                .to(userMapper.mapToDto(entity.getToo()))
-                .build();
-    }
+    PrivateMessagesDto mapToDto(PrivateMessages user);
 
-    public PrivateMessages mapFromDto(PrivateMessagesDto dto){
-        PrivateMessages privateMessages = new PrivateMessages();
-        privateMessages.setId(dto.getId());
-        privateMessages.setTime(dto.getTime());
-        privateMessages.setContent(dto.getContent());
-        privateMessages.setFrom(userMapper.mapToEntity(dto.getFrom()));
-        privateMessages.setToo(userMapper.mapToEntity(dto.getTo()));
-        return privateMessages;
-    }
+    PrivateMessagesView mapToView(PrivateMessagesDto dto);
 
-    public PrivateMessagesView mapToView(PrivateMessagesDto dto){
-        PrivateMessagesView view = new PrivateMessagesView();
-        view.setId(dto.getId());
-        view.setTime(dto.getTime());
-        view.setContent(dto.getContent());
-        view.setFrom(userMapper.mapToView(dto.getFrom()));
-        view.setTo(userMapper.mapToView(dto.getTo()));
-        return view;
-    }
+    PrivateMessagesDto mapFromView(PrivateMessagesView view);
 
-    public PrivateMessagesDto mapFromView(PrivateMessagesView view){
-        return PrivateMessagesDto.builder()
-                .id(view.getId())
-//                .time(view.getTime())
-                .time(view.getTime())
-                .content(view.getContent())
-                .from(userMapper.mapFromView(view.getFrom()))
-                .to(userMapper.mapFromView(view.getTo()))
-                .build();
-    }
 }

@@ -3,8 +3,8 @@ package ru.learnup.socialnetwork.reposiory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.learnup.socialnetwork.entity.Friend;
-import ru.learnup.socialnetwork.entity.User;
+import ru.learnup.socialnetwork.model.Friend;
+import ru.learnup.socialnetwork.model.User;
 
 import java.util.List;
 

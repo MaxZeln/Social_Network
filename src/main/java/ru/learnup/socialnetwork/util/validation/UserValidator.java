@@ -1,4 +1,4 @@
-package ru.learnup.socialnetwork.util;
+package ru.learnup.socialnetwork.util.validation;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,10 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.learnup.socialnetwork.entity.User;
+import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.service.EqualService;
-
-import java.util.Optional;
 
 @Component
 public class UserValidator implements Validator {
@@ -32,14 +30,14 @@ public class UserValidator implements Validator {
         User user = (User)target;
 
       try {
-          equalService.defineUserByNickname(user.getNickname());
+          equalService.defineUserByNickname(user.getLogin());
       } catch (UsernameNotFoundException ignored) {
           return;
       }
 
-
-        errors.rejectValue("nickname", "",
+        errors.rejectValue("login", "",
                 "A user with this username already exists, " +
                 "your username must be unique to register.");
+
     }
 }

@@ -1,9 +1,7 @@
-package ru.learnup.socialnetwork.model;
+package ru.learnup.socialnetwork.dto;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
