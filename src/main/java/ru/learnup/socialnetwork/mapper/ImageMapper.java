@@ -1,19 +1,14 @@
 package ru.learnup.socialnetwork.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.learnup.socialnetwork.dto.UserDto;
 import ru.learnup.socialnetwork.model.Image;
 import ru.learnup.socialnetwork.dto.ImageDto;
-import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.ImageView;
-import ru.learnup.socialnetwork.view.UserView;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Mapper
 public interface ImageMapper {
