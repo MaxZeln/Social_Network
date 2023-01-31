@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -28,7 +29,10 @@ public class AuthProvider implements AuthenticationProvider {
         String login = authentication.getName();
         String password = String.valueOf(authentication.getCredentials());
 
-        UserDetails personDetails = personDetailsService.loadUserByUsername(login);
+        PersonDetails personDetails = personDetailsService.loadUserByUsername(login);
+
+        System.out.println(personDetails.getPerson().getLogin());
+        System.out.println(personDetails.getPerson().getEmail());
 
         if (personDetails == null) {
             throw new BadCredentialsException("Unknown user " + login);
@@ -36,6 +40,9 @@ public class AuthProvider implements AuthenticationProvider {
         if (!password.equals(personDetails.getPassword())) {
             throw new BadCredentialsException("Incorrect password");
         }
+
+        System.out.println(personDetails.getPerson().getEmail());
+
 
         return new UsernamePasswordAuthenticationToken(personDetails, password,
                 Collections.emptyList());
