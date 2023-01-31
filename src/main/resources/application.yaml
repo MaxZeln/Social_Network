@@ -11,7 +11,7 @@ spring:
       mode: always
 
   jpa:
-    show-sql: true
+#    show-sql: true
 
   server:
     port: 8189
