@@ -3,8 +3,6 @@ package ru.learnup.socialnetwork.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 
 @Getter
@@ -32,11 +30,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "confirmPassword")
-    private String confirmPassword;
-
-    @Column(name = "Status")
-    private String Status;
+    @Column(name = "status")
+    private String status;
 
     @Column(name = "enabled")
     private Boolean enabled;
@@ -53,7 +48,7 @@ public class User {
                 "id=" + id +
                 ", nickname='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", Status='" + Status + '\'' +
+                ", Status='" + status + '\'' +
                 ", enabled=" + enabled +
                 ", image=" + image +
                 ", role=" + role +

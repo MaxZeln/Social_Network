@@ -1,6 +1,7 @@
 package ru.learnup.socialnetwork.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.learnup.socialnetwork.model.User;
@@ -11,51 +12,83 @@ import ru.learnup.socialnetwork.reposiory.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserRepository repository,
                        PasswordEncoder passwordEncoder) {
-        this.repository = repository;
+        this.userRepository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserDto> getUsers() {
-        return repository.findAll().stream()
+        return userRepository.findAll().stream()
                 .map(UserMapper.USER_MAPPER::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    public UserDto findById(long id) {
-        return UserMapper.USER_MAPPER.mapToDto(repository.getReferenceById(id));
+//    public UserDto findById(long id) {
+//
+//        return UserMapper.USER_MAPPER.mapToDto(userRepository.getReferenceById(id));
+//    }
+
+    public Optional<UserDto> findById(long id) {
+        UserDto userDto = UserMapper.USER_MAPPER.mapToDto(userRepository.getReferenceById(id));
+
+        Optional<UserDto> userDtoOptional = Optional.of(userDto);
+
+        if (userDtoOptional.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return userDtoOptional;
     }
 
+
+
+
+
+
+
+
+
+
     public UserDto findByUserNickname(String nickname) {
-        return UserMapper.USER_MAPPER.mapToDto(repository.findUserByLogin(nickname));
+        return UserMapper.USER_MAPPER.mapToDto(userRepository.findUserByLogin(nickname));
+    }
+
+    public Optional<User> defineUserByNickname(String s) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.searchUserByLogin(s);
+
+        if (user.isEmpty())
+            throw new UsernameNotFoundException("User not found");
+
+        return user;
     }
 
     @Transactional
     public UserDto create(UserDto user) {
         User entity = UserMapper.USER_MAPPER.mapFromDto(user);
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        repository.save(entity);
+        userRepository.save(entity);
         return UserMapper.USER_MAPPER.mapToDto(entity);
     }
 
     public void updateUser(UserDto dto) {
-        User entity = repository.getReferenceById(dto.getId());
+        User entity = userRepository.getReferenceById(dto.getId());
         UserMapperInt.USER_MAPPER_INT.updateUserFromDto(dto, entity);
-        repository.save(entity);
+        userRepository.save(entity);
     }
 
     public void delete(long id) {
-        User entity = repository.getReferenceById(id);
-        repository.delete(entity);
+        User entity = userRepository.getReferenceById(id);
+        userRepository.delete(entity);
     }
 }

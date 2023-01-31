@@ -6,8 +6,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ru.learnup.socialnetwork.dto.UserDto;
 import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.service.EqualService;
+import ru.learnup.socialnetwork.view.UserView;
+
+import java.util.Optional;
 
 @Component
 public class UserValidator implements Validator {
@@ -27,17 +31,36 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        User user = (User)target;
+        UserDto userDto = (UserDto) target;
 
-      try {
-          equalService.defineUserByNickname(user.getLogin());
-      } catch (UsernameNotFoundException ignored) {
-          return;
-      }
+        Optional<User> userForLogin = equalService.defineUserByNickname(userDto.getLogin());
 
-        errors.rejectValue("login", "",
-                "A user with this username already exists, " +
-                "your username must be unique to register.");
+//        Optional<User> userForEmail = equalService.defineUserByEmail(userDto.getEmail());
+//        Optional<User> userForPhone = equalService.defineUserByPhone(userDto.getPhone());
 
+        if (!userForLogin.isEmpty()) {
+            errors.rejectValue("Email", "",
+                    "A user with this email already exists, " +
+                            "your email must be unique to register.");
+
+
+        }
     }
+
+//    @Override
+//    public void validate(Object target, Errors errors) {
+//        UserView user = (UserView)target;
+//
+//      try {
+//          equalService.defineUserByNickname(user.getLogin());
+//      } catch (UsernameNotFoundException ignored) {
+//          return;
+//      }
+//
+//        errors.rejectValue("login", "",
+//                "A user with this username already exists, " +
+//                "your username must be unique to register.");
+//
+//    }
+
 }
