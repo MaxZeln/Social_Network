@@ -43,7 +43,8 @@ public class SecurityConfig {
                 .csrf(csrf ->  csrf.disable())
 
                 .authorizeRequests(auth -> {
-                    auth.antMatchers("/auth/login", "/auth/registration", "/error").permitAll();
+                    auth.antMatchers("/auth/registration" , "/auth/login", "/error").permitAll();
+                    auth.antMatchers("/user/userid", "/error" ).permitAll();
 
                     auth.anyRequest().authenticated();
 
@@ -52,13 +53,13 @@ public class SecurityConfig {
                 .formLogin(formLogin -> {
                     formLogin.loginPage("/auth/login");
                     formLogin.loginProcessingUrl("/process_login");
-                    formLogin.defaultSuccessUrl("/auth/hello", true);
+                    formLogin.defaultSuccessUrl("/auth/welcome", true);
                     formLogin.failureUrl("/auth/login?error");
                 })
 
                 .logout()
                     .logoutUrl("/logout")
-                    .logoutSuccessUrl("/auth/login")
+                    .logoutSuccessUrl("/login")
 
                 .and()
 
