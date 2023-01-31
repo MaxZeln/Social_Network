@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Logged User Profile</title>
 
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
 
-<!--<div class="row py-5 px-4">-->
-<!--    <div class="col-md-5 mx-auto">-->
-<!--        <div class="bg-white shadow rounded overflow-hidden">-->
-<!--            <div class="px-4 pt-0 pb-4 cover">-->
-<!--                <div class="media align-items-end profile-head">-->
-<!--                    <div class="profile mr-3">-->
+<!--    <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"-->
+<!--         alt="..." width="130" class="rounded mb-2 img-thumbnail">-->
 
-                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
-                             alt="..." width="130" class="rounded mb-2 img-thumbnail">
+<!--    <a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>-->
 
-                        <a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
 
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+    <div>
+        <img width="100" height="100"
+             th:src="*{'data:image/jpg;base64,'+ image}"
+             alt="#" />
+    </div>
+
+
+    <div>
+        <h2 th:text="${name}"></h2>
+    </div>
+
+
+<!--    Now, if you want, you can logout-->
+<!--    <br />-->
+<!--    from your account by this button:-->
+<!--    <a href="/logout">Logout</a>-->
 
 </body>
 </html>

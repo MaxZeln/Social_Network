@@ -23,12 +23,13 @@ DROP SEQUENCE IF EXISTS global_seq_images;
 CREATE SEQUENCE global_seq_images START WITH 1 INCREMENT BY 1;
 CREATE TABLE images
 (
-    id                 BIGINT PRIMARY KEY DEFAULT nextval('global_seq_images'),
+    id                 VARCHAR(255) PRIMARY KEY,
     content_type       VARCHAR(255),
     name               VARCHAR(255),
     size               BIGINT,
     bytes              BYTEA,
-    original_file_name VARCHAR(255)                           NOT NULL
+    original_file_name VARCHAR(255)
+--         NOT NULL
 );
 
 CREATE SEQUENCE global_seq_role START WITH 1 INCREMENT BY 1;
@@ -50,7 +51,7 @@ CREATE TABLE users
     status             VARCHAR(255),
     enabled            BOOLEAN,
     role_id            BIGINT,
-    image_id           BIGINT,
+    image_id           VARCHAR(255),
 
     FOREIGN KEY (role_id)
         REFERENCES role (id),
@@ -83,7 +84,7 @@ CREATE TABLE user_friends
 CREATE SEQUENCE global_seq_private_messages START WITH 1 INCREMENT BY 1;
 CREATE TABLE private_messages
 (
-    id        BIGINT PRIMARY KEY DEFAULT nextval('global_seq_private_messages'),
+    id         BIGINT PRIMARY KEY DEFAULT nextval('global_seq_private_messages'),
     from_id    BIGINT                                         NOT NULL,
     too_id     BIGINT                                         NOT NULL,
     content    VARCHAR(256),
@@ -104,7 +105,7 @@ CREATE TABLE post
     id        BIGINT PRIMARY KEY DEFAULT nextval('global_seq_post'),
     user_id   BIGINT                                         NOT NULL,
     content   VARCHAR(256),
-    image_id  BIGINT,
+    image_id  VARCHAR(255),
 
     FOREIGN KEY (user_id)
     REFERENCES users (id),
@@ -120,7 +121,7 @@ CREATE TABLE photo_album
 (
     id        BIGINT PRIMARY KEY DEFAULT nextval('global_seq_photo_album'),
     user_id   BIGINT                                         NOT NULL,
-    image_id BIGINT                                          NOT NULL,
+    image_id  VARCHAR(255)                                   NOT NULL,
 
     FOREIGN KEY (user_id)
     REFERENCES users (id),
