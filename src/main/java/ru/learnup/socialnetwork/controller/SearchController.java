@@ -9,6 +9,8 @@ import ru.learnup.socialnetwork.dto.UserDto;
 import ru.learnup.socialnetwork.service.UserService;
 import ru.learnup.socialnetwork.view.UserView;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/search")
 public class SearchController {
@@ -21,8 +23,8 @@ public class SearchController {
 
     @GetMapping("/userbyid")
     public UserView getUserById(@PathVariable(name = "userid") int userid) {
-        UserDto userDto = service.findById(userid);
-        return UserMapper.USER_MAPPER.mapToView(userDto);
+        Optional<UserDto> userDto = service.findById(userid);
+        return UserMapper.USER_MAPPER.mapToView(userDto.get());
     }
 
     @GetMapping("/userbynicknamel")
