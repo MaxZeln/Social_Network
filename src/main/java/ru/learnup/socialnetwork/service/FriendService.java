@@ -55,8 +55,8 @@ public class FriendService {
 
         if( !(friendRepository.existsByFirstUserAndSecondUser(user1, user2)) )  {
             Friend friend = new Friend();
-            friend.setUserId(user1);
-            friend.setFriendId(user2);
+            friend.setUserId(user1.getId());
+            friend.setFriendId(user2.getId());
             friendRepository.save(friend);
         }
 

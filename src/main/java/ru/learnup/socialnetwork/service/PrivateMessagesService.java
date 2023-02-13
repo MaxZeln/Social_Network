@@ -28,13 +28,13 @@ public class PrivateMessagesService {
                 .collect(Collectors.toList());
     }
 
-    public List<PrivateMessagesDto> getMessagesFrom(User from_id) {
+    public List<PrivateMessagesDto> getMessagesFrom(Long from_id) {
         return repository.findAllByFrom_id(from_id).stream()
                 .map(PrivateMessagesMapper.PRIVATE_MESSAGES_MAPPER::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    public List<PrivateMessagesDto> getMessagesFromAndTo(User from_id, User to_id) {
+    public List<PrivateMessagesDto> getMessagesFromAndTo(Long from_id, Long to_id) {
         return repository.findAllByFrom_idAndToo_id(from_id, to_id).stream()
                 .map(PrivateMessagesMapper.PRIVATE_MESSAGES_MAPPER::mapToDto)
                 .collect(Collectors.toList());

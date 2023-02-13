@@ -42,23 +42,17 @@ public class PrivateMessagesController {
     }
 
     @GetMapping("/messagesFrom")
-    public List<PrivateMessagesView> getMessagesFrom(@RequestBody UserView userView) {
-        UserDto userDto = UserMapper.USER_MAPPER.mapFromView(userView);
-        User entity = UserMapper.USER_MAPPER.mapFromDto(userDto);
-        List<PrivateMessagesDto> messages = service.getMessagesFrom(entity);
+    public List<PrivateMessagesView> getMessagesFrom(@RequestBody Long userId) {
+        List<PrivateMessagesDto> messages = service.getMessagesFrom(userId);
         return messages.stream()
                 .map(PrivateMessagesMapper.PRIVATE_MESSAGES_MAPPER::mapToView)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/messagesFromAndTo")
-    public List<PrivateMessagesView> getMessagesFromAndTo(@RequestBody UserView from,
-                                                          @RequestBody UserView to) {
-        UserDto fromUserDto = UserMapper.USER_MAPPER.mapFromView(from);
-        User fromEntity = UserMapper.USER_MAPPER.mapFromDto(fromUserDto);
-        UserDto toUserDto = UserMapper.USER_MAPPER.mapFromView(to);
-        User toEntity = UserMapper.USER_MAPPER.mapFromDto(toUserDto);
-        List<PrivateMessagesDto> messages = service.getMessagesFromAndTo(fromEntity, toEntity);
+    public List<PrivateMessagesView> getMessagesFromAndTo(@RequestBody Long fromUserId,
+                                                          @RequestBody Long toUserId) {
+        List<PrivateMessagesDto> messages = service.getMessagesFromAndTo(fromUserId, toUserId);
         return messages.stream()
                 .map(PrivateMessagesMapper.PRIVATE_MESSAGES_MAPPER::mapToView)
                 .collect(Collectors.toList());

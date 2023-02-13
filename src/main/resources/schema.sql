@@ -46,7 +46,7 @@ CREATE TABLE users
 
     login              VARCHAR(255),
     email              VARCHAR(30)                            NOT NULL,
-    phone              VARCHAR(12)                            NOT NULL,
+    phone              VARCHAR(20)                            NOT NULL,
     password           VARCHAR(100)                           NOT NULL,
     status             VARCHAR(255),
     enabled            BOOLEAN,

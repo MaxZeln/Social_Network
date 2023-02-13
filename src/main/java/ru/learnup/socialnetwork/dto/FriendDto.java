@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class FriendDto {
 
     private Long id;
-    private UserDto userId;
-    private UserDto friendId;
+    private Long userId;
+    private Long friendId;
 
 }

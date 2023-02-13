@@ -15,8 +15,8 @@ public class PrivateMessagesView {
     @JsonProperty
     private String content;
     @JsonProperty
-    private UserView from;
+    private Long fromUserId;
     @JsonProperty
-    private UserView to;
+    private Long tooUserId;
 
 }

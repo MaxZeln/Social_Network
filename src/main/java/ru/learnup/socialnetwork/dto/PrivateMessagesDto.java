@@ -16,7 +16,7 @@ public class PrivateMessagesDto {
     private Long id;
     private LocalDateTime time;
     private String content;
-    private UserDto from;
-    private UserDto to;
+    private Long fromUserId;
+    private Long tooUserId;
 
 }

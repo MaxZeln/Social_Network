@@ -28,10 +28,10 @@ public class PrivateMessages {
     @Column(name = "content")
     private String content;
 
-    @OneToOne
-    private User from;
+    @Column(name = "from_id")
+    private Long fromUserId;
 
-    @OneToOne
-    private User too;
+    @Column(name = "too_id")
+    private Long tooUserId;
 
 }

@@ -3,8 +3,6 @@ package ru.learnup.socialnetwork.model;
 import lombok.*;
 
 import javax.persistence.*;
-//import java.util.List;
-
 
 @Getter
 @Setter
@@ -19,12 +17,10 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @OneToOne
-    @JoinColumn(name = "friend_id")
-    private User friendId;
+    @Column(name = "friend_id")
+    private Long friendId;
 
 }
