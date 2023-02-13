@@ -2,6 +2,7 @@ package ru.learnup.socialnetwork.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.learnup.socialnetwork.dto.FriendDto;
 import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.mapper.FriendMapper;
 import ru.learnup.socialnetwork.reposiory.UserRepository;
@@ -31,21 +32,20 @@ public class FriendsController {
 
     @GetMapping("/{userid}")
     public List<FriendView> getFriends(@PathVariable(name = "userid") long userid) {
-        User user = userRepository.getReferenceById(userid);
-        return friendsService.findByUserId(user).stream()
+        return friendsService.findByUserId(userid).stream()
                 .map(FriendMapper.FRIEND_MAPPER::mapToView)
                 .collect(Collectors.toList());
     }
 
 
 
-//    @PostMapping
-//    public FriendView AddFriend(@RequestBody FriendView friendsView) {
-//        FriendDto friendsDto = mapper.mapFromView(friendsView);
-//        return mapper.mapToView(
-//                friendsService.create(friendsDto)
-//        );
-//    }
+    @PostMapping
+    public FriendView AddFriend(@RequestBody FriendView friendView) {
+        FriendDto friendsDto = FriendMapper.FRIEND_MAPPER.mapFromView(friendView);
+
+        return FriendMapper.FRIEND_MAPPER.mapToView(
+                friendsService.create(friendsDto));
+    }
 
 //    @GetMapping
 //    public ResponseEntity<?> AddFriend(@RequestParam("friendId") long friendId) throws NullPointerException {

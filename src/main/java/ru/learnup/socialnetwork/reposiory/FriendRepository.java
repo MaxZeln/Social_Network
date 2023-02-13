@@ -12,10 +12,9 @@ import java.util.List;
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     @Query("SELECT ud from user_friends ud where ud.userId=?1 and ud.friendId=?1")
-    boolean existsByFirstUserAndSecondUser(User first,User second);
-
+    boolean existsByFirstUserAndSecondUser(Long first,Long second);
     @Query("SELECT ud from user_friends ud where ud.userId=?1")
-    List<Friend> findByFirstUser(User user_id);
+    List<Friend> findByFirstUser(Long user_id);
     @Query("SELECT ud from user_friends ud where ud.friendId=?1")
-    List<Friend> findBySecondUser(User user_id);
+    List<Friend> findBySecondUser(Long user_id);
 }

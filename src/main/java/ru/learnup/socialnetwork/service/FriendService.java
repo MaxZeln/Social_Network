@@ -13,6 +13,7 @@ import ru.learnup.socialnetwork.reposiory.UserRepository;
 import ru.learnup.socialnetwork.security.AuthService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,10 @@ public class FriendService {
     private final AuthService authService;
 
     @Autowired
-    public FriendService(FriendRepository repository,
+    public FriendService(FriendRepository friendRepository,
                          UserRepository userRepository,
                          AuthService authService) {
-        this.friendRepository = repository;
+        this.friendRepository = friendRepository;
         this.userRepository = userRepository;
         this.authService = authService;
     }
@@ -45,47 +46,28 @@ public class FriendService {
 
 
     @Transactional
-    public void saveFriend(UserDto userDto1, long id) throws NullPointerException {
-
-        User user = userRepository.getReferenceById(id);
-        UserDto userDto2 = UserMapper.USER_MAPPER.mapToDto(user);
-
-        User user1 = userRepository.findUserByLogin(userDto1.getLogin());
-        User user2 = userRepository.findUserByLogin(userDto2.getLogin());
-
-        if( !(friendRepository.existsByFirstUserAndSecondUser(user1, user2)) )  {
-            Friend friend = new Friend();
-            friend.setUserId(user1.getId());
-            friend.setFriendId(user2.getId());
-            friendRepository.save(friend);
+    public void saveFriend(Long user_id, Long friend_id) throws NullPointerException {
+        if( !(friendRepository.existsByFirstUserAndSecondUser(user_id, friend_id)) )  {
+            Friend newFriend = new Friend();
+            newFriend.setUserId(user_id);
+            newFriend.setFriendId(friend_id);
+            friendRepository.save(newFriend);
         }
-
     }
 
-//    public List<User> getFriends() {
-//
-//        User currentUser = authService.getUser();
-//
-//        List<Friend> friendsByFirstUser = friendRepository.findByFirstUser(currentUser);
-//        List<User> friendUsers = new ArrayList<>();
-//
-//
-//    }
 
-    public List<FriendDto> findByUserId(User user) {
-        return friendRepository.findByFirstUser(user).stream()
+    public List<FriendDto> findByUserId(Long user_id) {
+        return friendRepository.findByFirstUser(user_id).stream()
                 .map(FriendMapper.FRIEND_MAPPER::mapToDto)
                 .collect(Collectors.toList());
-
-//        return mapper.mapToDto(repository.findFriendsByUserId(user));
     }
 
-//    @Transactional
-//    public FriendDto create(FriendDto friends) {
-//        Friend entity = mapper.mapToEntity(friends);
-//        repository.save(entity);
-//        return mapper.mapToDto(entity);
-//    }
+    @Transactional
+    public FriendDto create(FriendDto friends) {
+        Friend entity = FriendMapper.FRIEND_MAPPER.mapFromDto(friends);
+        friendRepository.save(entity);
+        return FriendMapper.FRIEND_MAPPER.mapToDto(entity);
+    }
 
     public void delete(long id) {
         Friend entity = friendRepository.getReferenceById(id);
