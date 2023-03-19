@@ -1,9 +1,6 @@
 package ru.learnup.socialnetwork.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.learnup.socialnetwork.mapper.UserMapper;
 import ru.learnup.socialnetwork.dto.UserDto;
 import ru.learnup.socialnetwork.service.UserService;
@@ -22,13 +19,13 @@ public class SearchController {
     }
 
     @GetMapping("/userbyid")
-    public UserView getUserById(@PathVariable(name = "userid") int userid) {
+    public UserView getUserById(@RequestParam(name = "userid") int userid) {
         Optional<UserDto> userDto = service.findById(userid);
         return UserMapper.USER_MAPPER.mapToView(userDto.get());
     }
 
-    @GetMapping("/userbynicknamel")
-    public UserView getUserByNickname(@PathVariable(name = "nickname") String nickname) {
+    @GetMapping("/userbynickname")
+    public UserView getUserByNickname(@RequestParam(name = "nickname") String nickname) {
         UserDto userDto = service.findByUserNickname(nickname);
         return UserMapper.USER_MAPPER.mapToView(userDto);
     }

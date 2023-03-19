@@ -8,7 +8,7 @@ import ru.learnup.socialnetwork.view.RoleView;
 
 import java.util.Optional;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RoleMapper {
 
     RoleMapper ROLE_MAPPER = Mappers.getMapper(RoleMapper.class);

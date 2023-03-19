@@ -12,7 +12,7 @@ import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.ImagesResponseView;
 import ru.learnup.socialnetwork.view.UserView;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ImageResponseMapper {
 
     ImageResponseMapper IMAGES_RESPONSE = Mappers.getMapper(ImageResponseMapper.class);

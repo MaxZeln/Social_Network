@@ -34,11 +34,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-//    public UserDto findById(long id) {
-//
-//        return UserMapper.USER_MAPPER.mapToDto(userRepository.getReferenceById(id));
-//    }
-
     public Optional<UserDto> findById(long id) {
         UserDto userDto = UserMapper.USER_MAPPER.mapToDto(userRepository.getReferenceById(id));
 
@@ -50,15 +45,6 @@ public class UserService {
 
         return userDtoOptional;
     }
-
-
-
-
-
-
-
-
-
 
     public UserDto findByUserNickname(String nickname) {
         return UserMapper.USER_MAPPER.mapToDto(userRepository.findUserByLogin(nickname));

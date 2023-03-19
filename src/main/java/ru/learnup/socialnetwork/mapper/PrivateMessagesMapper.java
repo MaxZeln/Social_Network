@@ -12,7 +12,7 @@ import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.PrivateMessagesView;
 import ru.learnup.socialnetwork.view.UserView;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PrivateMessagesMapper {
 
     PrivateMessagesMapper PRIVATE_MESSAGES_MAPPER = Mappers.getMapper(PrivateMessagesMapper.class);

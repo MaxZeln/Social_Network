@@ -12,7 +12,7 @@ import ru.learnup.socialnetwork.model.User;
 import ru.learnup.socialnetwork.view.FriendView;
 import ru.learnup.socialnetwork.view.UserView;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface FriendMapper {
 
     FriendMapper FRIEND_MAPPER= Mappers.getMapper(FriendMapper.class);

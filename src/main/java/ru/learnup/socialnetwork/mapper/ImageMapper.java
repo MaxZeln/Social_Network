@@ -10,7 +10,7 @@ import ru.learnup.socialnetwork.view.ImageView;
 import java.io.IOException;
 import java.util.Optional;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ImageMapper {
 
     ImageMapper IMAGE_MAPPER = Mappers.getMapper(ImageMapper.class);
